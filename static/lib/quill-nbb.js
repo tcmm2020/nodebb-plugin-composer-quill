@@ -285,6 +285,7 @@ window.quill.init = function (targetEl, data, callback) {
 
 		// Quill...
 		Quill.register('modules/magicUrl', MagicUrl.default);
+		const Delta = Quill.import('delta');
 		var quill = new Quill(targetEl.get(0), {
 			theme: data.theme || 'snow',
 			modules: {
@@ -300,6 +301,14 @@ window.quill.init = function (targetEl, data, callback) {
 		});
 		targetEl.data('quill', quill);
 		targetEl.find('.ql-editor').addClass('write');
+
+		quill.clipboard.addMatcher(Node.ELEMENT_NODE, function(node, delta) {
+			// console.log('clipboard', node);
+			if (node.tagName === 'IMG') {
+				return new Delta().insert('');
+			}
+			return delta;
+		});
 
 		// Configure toolbar icons (must be done after quill itself is instantiated)
 		var toolbarEl = targetEl.siblings('.ql-toolbar').length ? targetEl.siblings('.ql-toolbar') : targetEl.find('.ql-toolbar');
