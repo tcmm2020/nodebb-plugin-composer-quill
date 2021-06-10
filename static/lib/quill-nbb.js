@@ -101,7 +101,9 @@ define('quill-nbb', [
 
 			// Image vs. file upload
 			if (file.isImage) {
-				quill.insertEmbed(quill.getSelection().index, 'image', file.url);
+				if (quill.getSelection()) {
+					quill.insertEmbed(quill.getSelection().index, 'image', file.url);
+				}
 			} else {
 				var selection = quill.getSelection();
 
